@@ -1,0 +1,33 @@
+sudo apt update
+sudo apt install tcpdump -y
+
+tcpdump --version
+
+ip addr
+
+sudo tcpdump -i ens33 -e -n -q
+
+
+//sudo: Executes the command with superuser privileges, which are necessary to access network interfaces in this way.
+//tcpdump: The packet capture tool itself.
+//-i ens33: The -i flag specifies the network interface to listen on.
+//-e: This option is crucial for our lab. It tells tcpdump to print the link-level (Ethernet) header for each packet, which includes the source and destination MAC addresses.
+//-n: Prevents hostname resolution, showing raw IP addresses.
+//-q: "Quiet" mode, which reduces the amount of protocol-specific output.
+
+//Since we will be using the ping command, which uses the ICMP protocol, we will tell tcpdump to only capture ICMP packets. We will also add the -n flag to stop tcpdump from resolving IP addresses to hostnames and -q t
+
+sudo tcpdump -i ens33 -e -n -q 'icmp'
+
+after ping -c 4 google.com on terminal 2
+
+//42, seq 2, length 64
+//11:48:17.684831 00:50:56:f2:34:a0 > 00:0c:29:73:0f:65, IPv4, length 98: 142.250.187.174 > 192.168.88.128: ICMP echo reply, id 13042, seq 2, length 64
+//11:48:19.702468 00:0c:29:73:0f:65 > 00:50:56:f2:34:a0, IPv4, length 98: 192.168.88.128 > 142.250.187.174: ICMP echo request, id 13042, seq 3, length 64
+//11:48:19.730043 00:50:56:f2:34:a0 > 00:0c:29:73:0f:65, IPv4, length 98: 142.250.187.174 > 192.168.88.128: ICMP echo reply, id 13042, seq 3, length 64
+//11:48:20.703151 00:0c:29:73:0f:65 > 00:50:56:f2:34:a0, IPv4, length 98: 192.168.88.128 > 142.250.187.174: ICMP echo request, id 13042, seq 4, length 64
+//11:48:20.731088 00:50:56:f2:34:a0 > 00:0c:29:73:0f:65, IPv4, length 98: 142.250.187.174 > 192.168.88.128: ICMP echo reply, id 13042, seq 4, length 64
+
+####################################################
+
+sudo tcpdump -i ens33 -e -n -q 'arp'

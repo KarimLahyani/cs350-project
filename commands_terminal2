@@ -1,0 +1,27 @@
+//In this step, you will generate and observe unicast traffic. Unicast is a one-to-one communication method where a frame is sent from a single source to a single destination on the network. To do this, you'll use the common ping utility, which sends ICMP (Internet Control Message Protocol) packets to a target host to check for connectivity. These packets are encapsulated within Ethernet frames for transmission.
+
+//We'll use the -c 4 option to automatically send exactly four packets and then stop.
+
+ping -c 4 google.com
+
+//PING google.com (142.250.187.174) 56(84) bytes of data.
+//64 bytes from sof02s46-in-f14.1e100.net (142.250.187.174): icmp_seq=1 ttl=128 time=27.7 ms
+//64 bytes from sof02s46-in-f14.1e100.net (142.250.187.174): icmp_seq=2 ttl=128 time=28.1 ms
+//64 bytes from sof02s46-in-f14.1e100.net (142.250.187.174): icmp_seq=3 ttl=128 time=27.6 ms
+//64 bytes from sof02s46-in-f14.1e100.net (142.250.187.174): icmp_seq=4 ttl=128 time=28.0 ms
+//
+//--- google.com ping statistics ---
+//4 packets transmitted, 4 received, 0% packet loss, time 3100ms
+//rtt min/avg/max/mdev = 27.595/27.836/28.110/0.206 ms
+
+####################################################
+
+ip route | grep default
+
+//The output will show your default route, and the IP address listed after "via" is your gateway.
+default via 192.168.88.2 dev ens33 proto dhcp src 192.168.88.128 metric 20100 
+
+sudo ip -s -s neigh flush dev ens33 //This will remove known MAC address mappings, forcing your system to use ARP to find them again.
+
+
+ping -c 1  192.168.88.2
